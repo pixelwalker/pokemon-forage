@@ -12,13 +12,15 @@ A React application for viewing Pokémon in a "Netflix style" interface using th
 ## Installation
 
 1. Clone the repository:
-   ``git clone https://github.com/your-username/pokemon-forage.git``
+   ``git clone https://github.com/agus-ss/pokemon-forage.git``
    ``cd pokemon-forage``
 
 2. Install dependencies:
    ``npm install``
 3. Start the development server:
    ``npm start``
+3. Run Test:
+   ``npm test``
 
 
 ## Usage

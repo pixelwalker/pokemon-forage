@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../App';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   const handleLogin = () => {
     if (username === 'user' && password === 'password') {
       localStorage.setItem('auth', 'true');
-      console.log('Login successful, navigating to home');
-      navigate('/'); 
+      setIsAuthenticated(true); // Update the context state
+      navigate('/');
     } else {
       alert('Invalid credentials');
     }
   };
-
-  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
