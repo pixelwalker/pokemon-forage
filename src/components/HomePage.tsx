@@ -16,22 +16,38 @@ const HomePage: React.FC = () => {
     const fetchPokemon = async () => {
       const api = new PokemonClient();
       const response = await api.listPokemons(0, 151);
-      const detailedPokemonList = await Promise.all(response.results.map(async (pokemon) => {
-        const details = await api.getPokemonByName(pokemon.name);
-        return {
-          ...pokemon,
-          imageUrl: details.sprites.front_default || '',
-          types: details.types.map(typeInfo => typeInfo.type.name),
-        };
-      }));
-      const categorized = detailedPokemonList.reduce((acc, pokemon) => {
-        pokemon.types.forEach(type => {
-          if (!acc[type]) acc[type] = [];
-          acc[type].push(pokemon);
-        });
-        return acc;
-      }, {} as { [type: string]: PokemonWithDetails[] });
-      setCategorizedPokemon(categorized);
+      const allPokemon = response.results;
+      const detailedPokemonList = [];
+
+      for (let i = 0; i < allPokemon.length; i += 20) {
+        const batch = allPokemon.slice(i, i + 20);
+        const batchDetails = await Promise.all(
+          batch.map(async (pokemon) => {
+            const details = await api.getPokemonByName(pokemon.name);
+            return {
+              ...pokemon,
+              imageUrl: details.sprites.front_default || '',
+              types: details.types.map(typeInfo => typeInfo.type.name),
+            };
+          })
+        );
+        detailedPokemonList.push(...batchDetails);
+  
+        const categorized = detailedPokemonList.reduce((acc, pokemon) => {
+          pokemon.types.forEach(type => {
+            if (!acc[type]) acc[type] = [];
+            acc[type].push(pokemon);
+          });
+          return acc;
+        }, {} as { [type: string]: PokemonWithDetails[] });
+
+        setCategorizedPokemon(categorized);
+
+        // Sleep for 1 second after each batch
+        if (i + 20 < allPokemon.length) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
     };
     fetchPokemon();
   }, []);
