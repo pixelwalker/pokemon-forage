@@ -1,19 +1,32 @@
 import React, { useState, useContext } from 'react';
+// Importing necessary modules and hooks from React
 import { useNavigate } from 'react-router-dom';
+// Importing the useNavigate hook from react-router-dom for navigation
 import { AuthContext } from '../App';
+// Importing the AuthContext from the App component to access authentication state
 
 const Login: React.FC = () => {
+  // State to manage the username input
   const [username, setUsername] = useState('');
+  // State to manage the password input
   const [password, setPassword] = useState('');
+  // Hook for programmatic navigation
   const navigate = useNavigate();
+  // Destructuring the setIsAuthenticated function from the AuthContext
   const { setIsAuthenticated } = useContext(AuthContext);
 
+  // Function to handle the login process
   const handleLogin = () => {
+    // Check if the entered username and password are correct
     if (username === 'user' && password === 'password') {
+      // Set the authentication status in localStorage
       localStorage.setItem('auth', 'true');
-      setIsAuthenticated(true); // Update the context state
+      // Update the authentication context state
+      setIsAuthenticated(true);
+      // Navigate to the home page
       navigate('/');
     } else {
+      // Show an alert for invalid credentials
       alert('Invalid credentials');
     }
   };
