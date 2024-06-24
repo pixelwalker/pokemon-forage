@@ -30,8 +30,10 @@ const HomePage: React.FC = () => {
 
       // Fetch detailed information in batches of 20 Pokémon
       for (let i = 0; i < allPokemon.length; i += 20) {
+        // This line creates a subset (or batch) of 20 Pokémon from the full list allPokemon. The slice method is used to create this subset.
         const batch = allPokemon.slice(i, i + 20);
         const batchDetails = await Promise.all(
+          // batch.map iterates over each Pokémon in the current batch.
           batch.map(async (pokemon) => {
             const details = await api.getPokemonByName(pokemon.name);
             return {
@@ -44,6 +46,13 @@ const HomePage: React.FC = () => {
         detailedPokemonList.push(...batchDetails);
   
         // Categorize Pokémon by their types
+        // The reduce method is used to iterate over an array and accumulate a result based on the items in the array. 
+        // In this case, it's used to categorize Pokémon by their types.
+        // reduce iterates over detailedPokemonList.
+        // acc (short for "accumulator") is the object that will store the categorized Pokémon.
+        // pokemon is the current Pokémon object being processed in each iteration.
+        // if (!acc[type]) acc[type] = []; checks if the accumulator object (acc) already has an array for the current type. If not, it initializes an empty array for that type.
+        // acc[type].push(pokemon); adds the current Pokémon to the array corresponding to its type in the accumulator object.
         const categorized = detailedPokemonList.reduce((acc, pokemon) => {
           pokemon.types.forEach(type => {
             if (!acc[type]) acc[type] = [];

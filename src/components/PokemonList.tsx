@@ -28,15 +28,22 @@ const PokemonList: React.FC<PokemonListProps> = ({ categorizedPokemon, searchTer
     );
 
   return (
+    // The <>...</> syntax is a React Fragment. It allows you to group multiple elements without adding extra nodes to the DOM.
     <>
       {/* Mapping over the categorized Pokémon types */}
+      {/* Object.keys(categorizedPokemon) returns an array of the keys (types) in the categorizedPokemon object. */}
+      {/* map(type => (...)) iterates over each type, performing the operations inside the callback function for each type. */}
       {Object.keys(categorizedPokemon).map(type => (
+        // {/* filteredPokemon(categorizedPokemon[type]) filters the Pokémon of the current type.*/}
+        // {/*If the filtered list is not empty (length > 0), the following JSX block is rendered. */}
         filteredPokemon(categorizedPokemon[type]).length > 0 && (
           <div key={type} className="mb-8">
             {/* Displaying the type of Pokémon */}
             <h2 className="mb-2 text-2xl font-bold capitalize">{type}</h2>
             <div className="flex space-x-4 overflow-x-scroll py-4">
               {/* Mapping over the filtered Pokémon list */}
+            {/* filteredPokemon(categorizedPokemon[type]) returns a list of Pokémon of the current type. */}
+            {/* map(pokemon => (...)) iterates over each Pokémon in the filtered list. */}
               {filteredPokemon(categorizedPokemon[type]).map((pokemon: PokemonWithDetails) => (
                 <div key={pokemon.name} className="relative min-w-[200px]">
                   {/* Link to the Pokémon details page */}
